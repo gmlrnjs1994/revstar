@@ -20,8 +20,12 @@ _start:
 	mov rbx, [rax]
 	movzx rbx, byte[rbx]
 	sub rbx, 0x30	;	ASCII -> integer
-	cmp rbx, 9
+	cmp rbx, 10
 	jge endpoint
+
+	cmp rbx, 1
+	je onepoint
+
 	mov r8, 0
 	mov r9, 0
 temp:
@@ -68,4 +72,18 @@ endpoint:
 	mov rax, 1
 	mov rbx, 0
 	int 0x80
+
+onepoint:
+	mov rax, 1
+	mov rdi, 1
+	mov rsi, msg
+	mov rdx, 1
+	syscall
+
+	mov rax, 1
+	mov rdi, 1
+	mov rsi, ent
+	mov rdx, 1
+	syscall
+	jmp endpoint
 
